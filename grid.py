@@ -82,7 +82,3 @@ def lineIntersection(p1, p2, p3, p4, delta = 10 ** -10):
 	point = [x, y]
 
 	return point
-
-
-if __name__ == '__main__':
-	print(lineIntersection([1, 1], [2, 2], [1, -1], [1, 1]))

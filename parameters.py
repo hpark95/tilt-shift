@@ -1,7 +1,6 @@
-from graph import *
+from grid import *
 import numpy as np
 from PIL import Image
-from processing import selectPoints
 
 
 def determineParameters(filename, points):
@@ -38,11 +37,3 @@ def determineParameters(filename, points):
 	tau = np.arctan(vanLineCoeff[0])
 
 	return sigma, tau, v
-
-
-if __name__ == '__main__':
-	points = selectPoints('airport.jpg')
-	sigma, tau, v = determineParameters('airport.jpg', points)
-	print(sigma)
-	print(tau)
-	print(v)

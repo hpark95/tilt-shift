@@ -1,12 +1,10 @@
-from graph import *
+from grid import *
 import numpy as np
+import matplotlib.pyplot as plt
 from PIL import Image, ImageFilter
-from parameters import determineParameters
-from processing import selectPoints
 
 
 def calculateBlur(filename, sigma, tau, v, z0, s0 = 0.017, A = 0.0046):
-
 	img = Image.open(filename)
 	width, height = img.size
 	pc = [width / 2, height / 2]
@@ -28,11 +26,11 @@ def calculateBlur(filename, sigma, tau, v, z0, s0 = 0.017, A = 0.0046):
 
 	return blurMat
 
+
 def applyBlur(filename, blurMat):
 	img = Image.open(filename)
 	px = img.load()
-	finalImage = Image.new(img.mode, img.size, color = (0, 0, 0, 0))
-	finalImagePx = finalImage.load()
+	finalImage = Image.new(img.mode, img.size, color = (0, 0, 0))
 
 	maxBlur = np.amax(blurMat)
 	currBlurDiam = np.amin(blurMat)
@@ -40,23 +38,21 @@ def applyBlur(filename, blurMat):
 	print('end: ' + str(maxBlur))
 	while currBlurDiam <= maxBlur:
 		print('curr: ' + str(currBlurDiam))
-		tempImage = Image.new(img.mode, img.size, color = (0, 0, 0, 0))
+		tempImage = Image.new(img.mode, img.size, color = (0, 0, 0))
 		tempImagePx = tempImage.load()
+
 		for i in range(img.size[0]):
 			for j in range(img.size[1]):
 				if blurMat[i][j] == currBlurDiam:
+					blurMat[i][j] = maxBlur + 1
 					tempImagePx[i, j] = px[i, j]
-		tempImage = tempImage.filter(ImageFilter.GaussianBlur(radius = currBlurDiam))
+
+		tempImage = tempImage.filter(ImageFilter.GaussianBlur(radius = currBlurDiam / 2))
 
 		finalImage = Image.fromarray(np.asarray(finalImage) + np.asarray(tempImage))
-		currBlurDiam += 1
-		
+		currBlurDiam = np.amin(blurMat)
+	
+	finalImage.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
-	finalImage.save('result.png')
-
-if __name__ == '__main__':
-	points = selectPoints('airport.jpg')
-	sigma, tau, v = determineParameters('airport.jpg', points)
-	blurMat = calculateBlur('airport.jpg', sigma, tau, v, z0 = 0.15)
-	print(blurMat)
-	applyBlur('airport.jpg', blurMat)
+	finalImage.save('result.jpg')
+	plt.imshow(finalImage)
