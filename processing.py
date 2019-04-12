@@ -30,10 +30,8 @@ def selectPoints(filename):
         plt.draw()
         plt.plot([points[num_lines * 2][0], points[num_lines * 2 + 1][0]], [points[num_lines * 2][1], points[num_lines * 2 + 1][1]], 'black', linewidth = 1.5)
 
-    print(points)
-
     return points
 
 
 if __name__ == '__main__':
-    selectPoints('airport.jpg');
+    selectPoints('airport.jpg')
