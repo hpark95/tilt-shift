@@ -37,11 +37,12 @@ def determineParameters(filename, points):
 	sigma = np.pi / 2 - np.arctan(l / v)
 	tau = np.arctan(vanLineCoeff[0])
 
-	return sigma, tau
-	
+	return sigma, tau, v
+
 
 if __name__ == '__main__':
 	points = selectPoints('airport.jpg')
-	sigma, tau = determineParameters('airport.jpg', points)
+	sigma, tau, v = determineParameters('airport.jpg', points)
 	print(sigma)
 	print(tau)
+	print(v)
