@@ -5,6 +5,24 @@ from processing import selectPoints
 
 
 def determineParameters(filename, points):
+	'''
+	Determine parameters needed for 
+
+	Parameters:
+		filename: str
+			- the input filename
+			- used to find the x and y coordinates of the image center
+		points: tuple
+			- tuple containing 8 points selected by user
+
+	Retruns:
+		sigma: float
+			- the slant of the planar approximation to the scene, which is
+			  the angle between the ground plane’s surface normal and the imaging system’s optical axis
+		tau: float
+			- the tilt of the planar approximation the the scene, which is
+			  the angle between the vanishing line and the image's horizontal axis
+	'''
 	# Initialize variables needed for computation
 	img = Image.open(filename)
 	p1 = lineIntersection(points[0], points[1], points[2], points[3])
