@@ -6,7 +6,7 @@ from processing import selectPoints
 
 def determineParameters(filename, points):
 	'''
-	Determine parameters needed for 
+	Determine parameter values for the blur effect
 
 	Parameters:
 		filename: str
@@ -17,11 +17,11 @@ def determineParameters(filename, points):
 
 	Retruns:
 		sigma: float
-			- the slant of the planar approximation to the scene, which is
-			  the angle between the ground plane’s surface normal and the imaging system’s optical axis
+			- the slant
+			- the angle between the line of sight and surface normal
 		tau: float
-			- the tilt of the planar approximation the the scene, which is
-			  the angle between the vanishing line and the image's horizontal axis
+			- the tilt
+			- the direction of the slant relative to horizontal
 	'''
 	# Initialize variables needed for computation
 	img = Image.open(filename)
@@ -33,10 +33,12 @@ def determineParameters(filename, points):
 	v = np.sqrt(np.abs(p1[1] * p2[1] + p1[0] * p2[0]))
 	l = pointToLineDist(pc, vanLineCoeff[0], vanLineCoeff[1])
 
+	# Compute the sland and tilt
 	sigma = np.pi / 2 - np.arctan(l / v)
 	tau = np.arctan(vanLineCoeff[0])
 
 	return sigma, tau
+	
 
 if __name__ == '__main__':
 	points = selectPoints('airport.jpg')
